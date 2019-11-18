@@ -15,7 +15,7 @@ MongoClient.connect(uri, (err, result) => {
     console.log('connect successfully');
     const collection = result.db('ass1').collection('collection1');
 
-    app.delete('/accounts/:id', (req, res) => {
+    app.delete('/products/:id', (req, res) => {
       collection.deleteOne({_id: mongodb.ObjectID(req.params.id)}, (err, result) => {
         if(!err){
           console.log('Update successfully');
@@ -27,7 +27,7 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
-    app.put('/accounts/:id', (req, res) => {
+    app.put('/products/:id', (req, res) => {
       collection.updateOne({_id: mongodb.ObjectID(req.params.id)}, {$set: {name: req.body.name}}, (err, result) => {
         if(!err){
           console.log('Update successfully');
@@ -39,7 +39,7 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
-    app.post('/accounts', (req, res) => {
+    app.post('/products', (req, res) => {
       collection.insertOne(req.body, (err, result) => {
         if(!err){
           console.log(result);
@@ -51,7 +51,7 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
-    app.get('/accounts', (req, res) => {
+    app.get('/products', (req, res) => {
       collection.find().toArray((err, result) => {
         res.send(result);
         return;
