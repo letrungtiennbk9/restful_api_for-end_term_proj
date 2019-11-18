@@ -59,4 +59,4 @@ MongoClient.connect(uri, {autoIndex: false} ,(err, result) => {
   }
 });
 
-app.listen("https://restful-api-for-end-term-proj.herokuapp.com/");
+app.listen("https://myrestaurantand.herokuapp.com/index.html");
