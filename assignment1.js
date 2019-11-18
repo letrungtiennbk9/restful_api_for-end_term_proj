@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 let app = express();
 app.use(bodyParser.json());
-let uri = 'mongodb://localhost:27017/';
+let uri = 'mongodb+srv://letrungtiennbk9:Trungtienle9@cluster0-hjpbg.mongodb.net/ass1?retryWrites=true&w=majority';
 MongoClient.connect(uri, {autoIndex: false} ,(err, result) => {
   if(err){
     console.log('err connecting to db' + err.message);
@@ -59,4 +59,4 @@ MongoClient.connect(uri, {autoIndex: false} ,(err, result) => {
   }
 });
 
-app.listen(3000);
+app.listen("https://restful-api-for-end-term-proj.herokuapp.com/");
