@@ -1,1 +1,0 @@
-# restful_api_for-end_term_proj
