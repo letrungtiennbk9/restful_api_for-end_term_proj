@@ -40,7 +40,7 @@ MongoClient.connect(uri, (err, result) => {
     });
 
     app.post('/products', (req, res) => {
-      collection.insertOne(req.body, (err, result) => {
+      collection.insertMany(req.body, (err, result) => {
         if(!err){
           console.log(result);
           res.sendStatus(200);
