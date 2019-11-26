@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 let app = express();
 app.use(bodyParser.json());
-let uri = 'mongodb+srv://letrungtiennbk9:Trungtienle9@cluster0-hjpbg.mongodb.net/ass1?retryWrites=true&w=majority';
+let uri = 'mongodb+srv://letrungtiennbk9:Trungtienle9@cluster0-hjpbg.mongodb.net/shopping?retryWrites=true&w=majority';
 // let uri = 'mongodb://localhost:27017';
 MongoClient.connect(uri, (err, result) => {
   if(err){
@@ -13,7 +13,7 @@ MongoClient.connect(uri, (err, result) => {
   }
   else{
     console.log('connect successfully');
-    const collection = result.db('ass1').collection('collection1');
+    const collection = result.db('shopping').collection('products');
 
     app.delete('/products/:id', (req, res) => {
       collection.deleteOne({_id: mongodb.ObjectID(req.params.id)}, (err, result) => {
