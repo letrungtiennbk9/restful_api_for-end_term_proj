@@ -52,7 +52,7 @@ MongoClient.connect(uri, (err, result) => {
     });
 
     app.get('/products', (req, res) => {
-      collection.find().limit(10).toArray((err, result) => {
+      collection.find().skip(10).limit(10).toArray((err, result) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.send(result);
         return;
