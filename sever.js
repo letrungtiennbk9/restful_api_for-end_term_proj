@@ -51,8 +51,16 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
+    app.get('/products/:nTurn', (req, res) => {
+      collection.find().skip(req.params.nTurn * 10).limit(10).toArray((err, result) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(result);
+        return;
+      });
+    });
+    
     app.get('/products', (req, res) => {
-      collection.find().skip(10).limit(10).toArray((err, result) => {
+      collection.find().toArray((err, result) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.send(result);
         return;
