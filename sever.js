@@ -67,7 +67,8 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
-    app.get('/', (req, res) => {
+    app.get('/', (req, res) => {\
+      res.header("Access-Control-Allow-Origin", "*");
       res.send(req.query.type + " " + req.query.brand + " " + req.query.color);
       // res.send(req.query.brand);
     });
