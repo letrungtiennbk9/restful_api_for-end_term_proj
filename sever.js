@@ -52,7 +52,21 @@ MongoClient.connect(uri, (err, result) => {
     });
 
     app.get('/products/:nTurn', (req, res) => {
-      collection.find().skip(req.params.nTurn * 10).limit(10).toArray((err, result) => {
+      // res.send(req.query.type + " " + req.query.brand + " " + req.query.color);
+      let condition = {};
+      if(req.query.type != undefined){
+        condition.typeProduct = req.query.type;
+      }
+      if(req.query.brand != undefined){
+        condition.brand = req.query.brand;
+      }
+      if(req.query.color != undefined){
+        condition.color = req.query.color;
+      }
+      collection.find(condition)
+      // .skip(req.params.nTurn * 10)
+      .limit(req.params.nTurn * 10 + 10)
+      .toArray((err, result) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.send(result);
         return;
@@ -65,12 +79,6 @@ MongoClient.connect(uri, (err, result) => {
         res.send(result);
         return;
       });
-    });
-
-    app.get('/', (req, res) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.send(req.query.type + " " + req.query.brand + " " + req.query.color);
-      // res.send(req.query.brand);
     });
   }
 
