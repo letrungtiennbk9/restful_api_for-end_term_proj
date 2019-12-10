@@ -52,15 +52,15 @@ MongoClient.connect(uri, (err, result) => {
     });
 
     app.get('/products/:nTurn', (req, res) => {
-      // res.send(req.query.type + " " + req.query.brand + " " + req.query.color);
+      console.log(req.query.type + " " + req.query.brand + " " + req.query.color);
       let condition = {};
-      if(req.query.type != undefined){
+      if(req.query.type != undefined && req.query.type !=""){
         condition.typeProduct = req.query.type;
       }
-      if(req.query.brand != undefined){
+      if(req.query.brand != undefined && req.query.brand !=""){
         condition.brand = req.query.brand;
       }
-      if(req.query.color != undefined){
+      if(req.query.color != undefined && req.query.color !=""){
         condition.color = req.query.color;
       }
       collection.find(condition)
