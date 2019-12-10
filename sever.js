@@ -51,9 +51,19 @@ MongoClient.connect(uri, (err, result) => {
       });
     });
 
-    app.get('/products/:nTurn', (req, res) => {
+    app.get('/products/:nTurn/:sortType', (req, res) => {
+      console.log(req.params.nTurn + " " + req.params.sortType);
       console.log(req.query.type + " " + req.query.brand + " " + req.query.color);
       let condition = {};
+      let sortCond = {};
+      if(req.params.sortType != undefined && req.params.sortType != ""){
+        if(req.params.sortType == "priceAsc"){
+          sortCond.price = 1;
+        }
+        if(req.params.sortType == "priceDsc"){
+          sortCond.price = -1;
+        }
+      }
       if(req.query.type != undefined && req.query.type !=""){
         let val = req.query.type;
         let paramVals = [];
@@ -88,7 +98,7 @@ MongoClient.connect(uri, (err, result) => {
         condition.color = {$in: paramVals};
       }
       collection.find(condition)
-      // .skip(req.params.nTurn * 10)
+      .sort(sortCond)
       .limit(req.params.nTurn * 10 + 10)
       .toArray((err, result) => {
         res.header("Access-Control-Allow-Origin", "*");
