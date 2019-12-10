@@ -55,13 +55,37 @@ MongoClient.connect(uri, (err, result) => {
       console.log(req.query.type + " " + req.query.brand + " " + req.query.color);
       let condition = {};
       if(req.query.type != undefined && req.query.type !=""){
-        condition.typeProduct = req.query.type;
+        let val = req.query.type;
+        let paramVals = [];
+        if(val.includes(",")){
+          paramVals = val.split(",");
+        }
+        else{
+          paramVals.push(val);
+        }
+        condition.typeProduct = {$in: paramVals};
       }
       if(req.query.brand != undefined && req.query.brand !=""){
-        condition.brand = req.query.brand;
+        let val = req.query.brand;
+        let paramVals = [];
+        if(val.includes(",")){
+          paramVals = val.split(",");
+        }
+        else{
+          paramVals.push(val);
+        }
+        condition.brand = {$in: paramVals};
       }
       if(req.query.color != undefined && req.query.color !=""){
-        condition.color = req.query.color;
+        let val = req.query.color;
+        let paramVals = [];
+        if(val.includes(",")){
+          paramVals = val.split(",");
+        }
+        else{
+          paramVals.push(val);
+        }
+        condition.color = {$in: paramVals};
       }
       collection.find(condition)
       // .skip(req.params.nTurn * 10)
