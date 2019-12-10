@@ -66,6 +66,11 @@ MongoClient.connect(uri, (err, result) => {
         return;
       });
     });
+
+    app.get('/', (req, res) => {
+      res.send(req.query.type + " " + req.query.brand + " " + req.query.color);
+      // res.send(req.query.brand);
+    });
   }
 
 
