@@ -57,3 +57,7 @@ module.exports.updateById = async (itemId, request, callback) => {
 module.exports.deleteById = (itemId, callback) => {
   products.deleteMany({_id: mongoose.Types.ObjectId(itemId)}, callback);
 }
+
+module.exports.countAvailableDocs = (callback) => {
+  products.count({}, callback);
+}

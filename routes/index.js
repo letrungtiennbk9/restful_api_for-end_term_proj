@@ -9,5 +9,5 @@ router.post('/', indexTasks.trustedHeader, indexTasks.upload,
 );
 router.put('/:id', indexTasks.updateValidators, indexTasks.updateItem);
 router.delete('/:id', indexTasks.deleteItem);
-// router.get('/relatedProducts', indexTasks.getRelatedProducts);
+router.get('/relatedProducts', indexTasks.getRelatedProducts);
 module.exports = router;

@@ -148,7 +148,7 @@ indexTaskes.getOnDemand = (req, res, next) => {
   if (req.query.title != undefined && req.query.title != "") {
     let tmp = req.query.title;
     console.log(tmp);
-    condition.title = {$regex : new RegExp(tmp, "i")};
+    condition.title = { $regex: new RegExp(tmp, "i") };
   }
 
   Product.searchItemOnDemand(condition, (err, respond) => {
@@ -196,8 +196,8 @@ indexTaskes.updateItem = (req, res, next) => {
   }
 
   Product.updateById(req.params.id, req, (err, raw) => {
-    if(err) {
-      return res.status(500).json({message: 'Update failed'});
+    if (err) {
+      return res.status(500).json({ message: 'Update failed' });
     }
     else {
       res.sendStatus(200);
@@ -207,17 +207,37 @@ indexTaskes.updateItem = (req, res, next) => {
 
 indexTaskes.deleteItem = (req, res, next) => {
   Product.deleteById(req.params.id, (err) => {
-    if(err) {
-      return res.status(500).json({message: 'Delete failed'});
+    if (err) {
+      return res.status(500).json({ message: 'Delete failed' });
     }
     else {
-      return res.status(200).json({message: 'Delete successfully'});
+      return res.status(200).json({ message: 'Delete successfully' });
     }
   })
 }
 
-// indexTaskes.getRelatedProducts = (req, res, next) => {
-//   Product.find()
-// }
+indexTaskes.getRelatedProducts = (req, res, next) => {
+  Product.countAvailableDocs((err, result) => {
+    if (err) { return res.status(500).json({ message: 'Error getting related products' }) }
+
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr.push(Math.floor(Math.random() * result));
+    }
+
+    let tmp = [];
+    for (let i = 0; i < arr.length; i++) {
+      Product.findOne({}, (err, docs) => {
+        if (err) { return res.status(500).json({ message: 'Error getting related products' }) }
+
+        tmp.push(docs);
+        if(tmp.length == 5){
+          res.status(200).json({result: tmp});
+        }
+      }).skip(arr[i]);
+    }
+
+  });
+}
 
 module.exports = indexTaskes;
