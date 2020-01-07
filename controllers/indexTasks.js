@@ -5,7 +5,8 @@ const check = require('express-validator');
 var { validationResult } = require('express-validator');
 let multer = require("multer");
 const IMAGE_PATH = './public/images/product';
-const IMAGE_PATH_2 = 'http://localhost:8080/images/product/';
+const apiUrl = 'https://still-plateau-02404.herokuapp.com/';
+const IMAGE_PATH_2 = apiUrl + 'images/product/';
 const mongoose = require('mongoose');
 
 let storage = multer.diskStorage({
