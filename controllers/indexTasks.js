@@ -173,6 +173,9 @@ indexTaskes.getOnDemand = (req, res, next) => {
   if (req.query.id != undefined && req.query.id != "") {
     condition._id = mongoose.Types.ObjectId(req.query.id);
   }
+  if (req.query.price != undefined && req.query.price != "") {
+    condition.price = { $lt: req.query.price };
+  }
 
   Product.searchItemOnDemand(condition, (err, respond) => {
     if (err) {
@@ -264,7 +267,7 @@ indexTaskes.getTopTen = (req, res, next) => {
   Product.find({}, (err, docs) => {
     if(err){res.status(500).json({message: 'Error getting top ten'})}
     return res.status(200).json(docs);
-  }).sort({sold:-1})
+  }).limit(10).sort({sold:-1})
 }
 
 module.exports = indexTaskes;
