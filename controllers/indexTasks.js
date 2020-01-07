@@ -1,9 +1,12 @@
 let indexTaskes = {};
 const Product = require('../models/product');
+const Order = require('../models/order');
 const check = require('express-validator');
 var { validationResult } = require('express-validator');
 let multer = require("multer");
 const IMAGE_PATH = './public/images/product';
+const IMAGE_PATH_2 = 'http://localhost:8080/images/product/';
+const mongoose = require('mongoose');
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -101,6 +104,24 @@ indexTaskes.post = (req, res, next) => {
   }
 }
 
+indexTaskes.updateItem = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  req.body.imagePath = IMAGE_PATH_2 + req.file.filename;
+  Product.updateById(req.body.id, req, (err, raw) => {
+    if (err) {
+      return res.status(500).json({ message: 'Update failed' });
+    }
+    else {
+      console.log('Update successfully');
+      res.sendStatus(200);
+    }
+  });
+}
+
 indexTaskes.getOnDemand = (req, res, next) => {
   let condition = {};
   let sortCond = {};
@@ -147,8 +168,10 @@ indexTaskes.getOnDemand = (req, res, next) => {
   }
   if (req.query.title != undefined && req.query.title != "") {
     let tmp = req.query.title;
-    console.log(tmp);
     condition.title = { $regex: new RegExp(tmp, "i") };
+  }
+  if (req.query.id != undefined && req.query.id != "") {
+    condition._id = mongoose.Types.ObjectId(req.query.id);
   }
 
   Product.searchItemOnDemand(condition, (err, respond) => {
@@ -177,7 +200,9 @@ indexTaskes.getByDefault = (req, res, next) => {
 }
 
 indexTaskes.trustedHeader = (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");  
+  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 }
 
@@ -189,24 +214,9 @@ indexTaskes.checkIfFileExists = (req, res, next) => {
   next();
 }
 
-indexTaskes.updateItem = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
-  Product.updateById(req.params.id, req, (err, raw) => {
-    if (err) {
-      return res.status(500).json({ message: 'Update failed' });
-    }
-    else {
-      res.sendStatus(200);
-    }
-  });
-}
-
 indexTaskes.deleteItem = (req, res, next) => {
-  Product.deleteById(req.params.id, (err) => {
+  console.log(req.body);
+  Product.deleteById(req.body.id, (err) => {
     if (err) {
       return res.status(500).json({ message: 'Delete failed' });
     }
@@ -238,6 +248,23 @@ indexTaskes.getRelatedProducts = (req, res, next) => {
     }
 
   });
+}
+
+indexTaskes.getOrders = (req, res, next) => {
+  Order.find({}, (err, rspnd) => {
+    if(err){
+      return res.status(500).json({message: 'Error getting orders'});
+    }
+
+    return res.status(200).json({result: rspnd});
+  });
+}
+
+indexTaskes.getTopTen = (req, res, next) => {
+  Product.find({}, (err, docs) => {
+    if(err){res.status(500).json({message: 'Error getting top ten'})}
+    return res.status(200).json(docs);
+  }).sort({sold:-1})
 }
 
 module.exports = indexTaskes;

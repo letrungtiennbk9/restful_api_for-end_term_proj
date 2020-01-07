@@ -33,23 +33,31 @@ module.exports.searchItemOnDemand = (condition, callback, sortCond, limit) => {
 }
 
 module.exports.updateById = async (itemId, request, callback) => {
-  let currentItem;
+  // let currentItem;
 
-  await
-  products.find({ _id: mongoose.Types.ObjectId(itemId) }, (err, docs) => {
-    if(err) throw err;
-    else {
-      currentItem = docs[0];
-    }
-  });
+  // await
+  // products.find({ _id: mongoose.Types.ObjectId(itemId) }, (err, docs) => {
+  //   if(err) throw err;
+  //   else {
+  //     currentItem = docs[0];
+  //   }
+  // });
   
+  // let setCond = {};
+  // setCond.title= request.body.title == undefined ? currentItem.title : request.body.title;
+  // setCond.price= request.body.price == undefined ? currentItem.price : request.body.price;
+  // setCond.typeProduct= request.body.typeProduct == undefined ? currentItem.typeProduct : request.body.typeProduct;
+  // setCond.brand= request.body.brand == undefined ? currentItem.brand : request.body.brand;
+  // setCond.color= request.body.color == undefined ? currentItem.color : request.body.color;
+  // setCond.imagePath= request.body.imagePath == undefined ? currentItem.imagePath : request.body.imagePath;
+
   let setCond = {};
-  setCond.title= request.body.title == undefined ? currentItem.title : request.body.title;
-  setCond.price= request.body.price == undefined ? currentItem.price : request.body.price;
-  setCond.typeProduct= request.body.typeProduct == undefined ? currentItem.typeProduct : request.body.typeProduct;
-  setCond.brand= request.body.brand == undefined ? currentItem.brand : request.body.brand;
-  setCond.color= request.body.color == undefined ? currentItem.color : request.body.color;
-  setCond.imagePath= request.body.imagePath == undefined ? currentItem.imagePath : request.body.imagePath;
+  setCond.title= request.body.title;
+  setCond.price= request.body.price;
+  setCond.typeProduct= request.body.typeProduct;
+  setCond.brand= request.body.brand;
+  setCond.color= request.body.color;
+  setCond.imagePath= request.body.imagePath;
 
   products.updateMany({ _id: mongoose.Types.ObjectId(itemId) }, { $set: setCond }, callback);
 }
