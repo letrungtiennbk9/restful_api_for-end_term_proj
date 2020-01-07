@@ -5,8 +5,8 @@ const check = require('express-validator');
 var { validationResult } = require('express-validator');
 let multer = require("multer");
 const apiUrl = 'https://still-plateau-02404.herokuapp.com/';
-const IMAGE_PATH = apiUrl + 'images/product';
-const IMAGE_PATH_2 = apiUrl + 'images/product/';
+const IMAGE_PATH = './public/img/product';
+const IMAGE_PATH_2 = apiUrl + 'img/product/';
 const mongoose = require('mongoose');
 
 let storage = multer.diskStorage({
@@ -88,7 +88,7 @@ indexTaskes.post = (req, res, next) => {
     return res.status(422).json({ errors: errors.array() });
   }
   else {
-    req.body.imagePath = IMAGE_PATH + req.file.filename;
+    req.body.imagePath = IMAGE_PATH_2 + req.file.filename;
     Product.insertItem(req.body, (err, docs) => {
       if (err) {
         console.log("Error insert to database");
